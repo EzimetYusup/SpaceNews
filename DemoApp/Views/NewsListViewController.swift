@@ -7,15 +7,18 @@
 
 import Combine
 import CombineCocoa
-import DifferenceKit
 import ReSwift
 import SDWebImage
 import TinyConstraints
 import UIKit
 
-class NewsListViewController: UIViewController {
+class NewsListViewController: UIViewController, Loadable, Failable {
+
+    var stateContainerView: UIView = UIView()
 
     let tableView: UITableView = UITableView()
+
+    var loader: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
 
     var articles: [Article] = []
 
@@ -45,6 +48,7 @@ class NewsListViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationController?.delegate = self
         setupTableView()
+        addStateContainer()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -82,7 +86,7 @@ class NewsListViewController: UIViewController {
             .sink { mainStore.dispatch($0) }
             .store(in: &cancellables)
 
-        // infinite load next page as tableview reach the bottom
+        // infinite load next page as tableview reaches the bottom
         tableView.willDisplayCellPublisher
             .filter { $1.row == mainStore.state.articles.count - 1 }
             .map { _ in fetchArticle }
@@ -104,24 +108,50 @@ extension NewsListViewController: StoreSubscriber {
     func newState(state: MainState) {
         // push to news details screen, if state has changed
         if case .show =  state.newsDetailStatus {
-            self.navigationController?.pushViewController(NewsDetailViewController(), animated: true)
+            let detailsViewController = NewsDetailViewController(nibName: nil, bundle: .main)
+            self.navigationController?.pushViewController(detailsViewController, animated: true)
             return
         }
 
+        updateLoaderState(state.loadingState)
+
         // get the difference of articles, and append it to the snapshot
-        let changeset = StagedChangeset(source: self.articles, target: state.articles)
-        if changeset.isEmpty {
+        let inserted = state.articles - self.articles
+        if inserted.isEmpty {
             return
         }
 
         self.articles = state.articles
         var snapshot = datasource.snapshot()
-        let inserted = changeset[0].elementInserted
-        let newArticles: [Article] = Array(state.articles[inserted.first!.element...inserted.last!.element])
+        let newArticles: [Article] = inserted
         snapshot.appendItems(newArticles, toSection: 0)
         datasource.apply(snapshot)
     }
 
+    func updateLoaderState(_ state: LoadingState) {
+        // make sure we are updating UI in main thread
+        Task {
+            switch state {
+            case .loading:
+                hideFailedView()
+                showLoader()
+            case .idle:
+                hideLoader()
+                hideFailedView()
+            case .failed(let errorMessage):
+                hideLoader()
+                showFailedView(errorMessage ?? "Oh Snap, we hit a snag, try again later")
+            }
+        }
+    }
+
+}
+
+// MARK: Retriable implementation 
+extension NewsListViewController: Retriable {
+    func didPressRetry() {
+        mainStore.dispatch(fetchArticle)
+    }
 }
 
 extension NewsListViewController: UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
