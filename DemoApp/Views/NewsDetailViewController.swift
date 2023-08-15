@@ -39,7 +39,7 @@ class NewsDetailViewController: UIViewController {
         return imageView
     }()
 
-    let articletSummary: UILabel = {
+    let articleSummary: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body, compatibleWith: .none)
         label.numberOfLines = 0
@@ -59,15 +59,31 @@ class NewsDetailViewController: UIViewController {
     }
 
     private func setUpScrollViewAndContent() {
-        scrollView.edgesToSuperview()
         scrollView.addSubview(scrollViewContainer)
-        scrollViewContainer.edgesToSuperview()
+        scrollViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+
+        let margins = view.layoutMarginsGuide
+        NSLayoutConstraint.activate([
+            // set constraints for scroll view
+            scrollView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            // set constraints for container inside scrollview
+            scrollViewContainer.widthAnchor.constraint(equalTo: margins.widthAnchor),
+            scrollViewContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            scrollViewContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            scrollViewContainer.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            scrollViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+
+        ])
 
         scrollViewContainer.addArrangedSubview(articleTitleLabel)
         scrollViewContainer.addArrangedSubview(articleImageView)
-        scrollViewContainer.addArrangedSubview(articletSummary)
+        scrollViewContainer.addArrangedSubview(articleSummary)
 
-        scrollViewContainer.width(view.frame.width)
         articleImageView.height(view.frame.width*0.65)
     }
 
@@ -97,7 +113,7 @@ extension NewsDetailViewController: StoreSubscriber {
             articleTitleLabel.text = article.title
             let placeHolder = UIImage(systemName: "photo")
             articleImageView.sd_setImage(with: URL(string: article.imageUrl), placeholderImage: placeHolder)
-            articletSummary.text = article.summary
+            articleSummary.text = article.summary
         }
     }
 }
