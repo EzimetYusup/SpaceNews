@@ -11,7 +11,7 @@ import UIKit
 class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
     var isPresenting: Bool
-    var originFrame: CGRect
+    var cellImageFrame: CGRect
     var cell: NewsCell
     var image: UIImage
 
@@ -21,7 +21,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         self.isPresenting = isPresenting
         self.cell = newsCell
         let imageFrame = cell.thumbNail.superview!.convert(cell.thumbNail.frame, to: nil)
-        self.originFrame = imageFrame
+        self.cellImageFrame = imageFrame
         if let image = newsCell.thumbNail.image {
             self.image = image
         } else {
@@ -62,10 +62,11 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         // prepare news detail screen views for animation
         newsDetailVC.articleImageView.alpha = 0
         newsDetailVC.articleTitleLabel.alpha = self.isPresenting ? 0 : 1
-        newsDetailVC.articletSummary.alpha = self.isPresenting ? 0 : 1
+        newsDetailVC.articleSummary.alpha = self.isPresenting ? 0 : 1
 
         // frame origin of the moving image
-        let movingImageOrigin = self.isPresenting ? self.originFrame :  newsDetailVC.articleImageView.frame
+        let imageFrameInNewsDetails = newsDetailVC.articleImageView.superview!.convert(newsDetailVC.articleImageView.frame, to: nil)
+        let movingImageOrigin = self.isPresenting ? self.cellImageFrame : imageFrameInNewsDetails
         // this is the image view that animate between news list VC and news detail VC
         let movingImage = UIImageView(frame: movingImageOrigin)
         movingImage.contentMode = .scaleAspectFill
@@ -82,18 +83,19 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let titleLabel = newsDetailVC.articleTitleLabel
         newsDetailVC.articleTitleLabel.sizeToFit()
 
-        let labelWidth = toView.bounds.width
+        let labelWidth = toView.bounds.width - toView.layoutMargins.left  - toView.layoutMargins.right
         let maxLabelSize = CGSize(width: labelWidth, height: CGFloat.greatestFiniteMagnitude)
         let actualLabelSize = titleLabel.text!.boundingRect(with: maxLabelSize, options: [.usesLineFragmentOrigin], attributes: [.font: titleLabel.font!], context: nil)
         let labelHeight = actualLabelSize.height
 
         var destinationImageFrameInNewsDetail = newsDetailVC.articleImageView.superview!.convert(newsDetailVC.articleImageView.frame, to: nil)
         destinationImageFrameInNewsDetail.origin.y += labelHeight + 10 // stack view spacing
+        destinationImageFrameInNewsDetail.origin.x += toView.layoutMargins.left // safe area
 
-        let width = toView.bounds.width
-        destinationImageFrameInNewsDetail.size = CGSize(width: width, height: width*0.65)
+        let width = toView.bounds.width - toView.layoutMargins.left  - toView.layoutMargins.right
+        destinationImageFrameInNewsDetail.size = CGSize(width: width, height: toView.frame.width*0.65)
 
-        let destinationImageFrame = self.isPresenting ? destinationImageFrameInNewsDetail : originFrame
+        let destinationImageFrame = self.isPresenting ? destinationImageFrameInNewsDetail : cellImageFrame
 
         let timing = TimingCurve(curve: .easeIn, dampingRatio: 0.8)
         let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: timing)
@@ -102,7 +104,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             movingImage.frame = destinationImageFrame
             movingImage.layer.cornerRadius = self.isPresenting ? 0 : 15
             newsDetailVC.articleTitleLabel.alpha = self.isPresenting ? 1 : 0
-            newsDetailVC.articletSummary.alpha = self.isPresenting ? 1 : 0
+            newsDetailVC.articleSummary.alpha = self.isPresenting ? 1 : 0
         }
 
         animator.addCompletion { _ in
