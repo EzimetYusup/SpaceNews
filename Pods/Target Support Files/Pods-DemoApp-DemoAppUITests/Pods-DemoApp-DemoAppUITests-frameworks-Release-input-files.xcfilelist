@@ -1,6 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-DemoApp-DemoAppUITests/Pods-DemoApp-DemoAppUITests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/CombineCocoa/CombineCocoa.framework
-${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework
 ${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework
 ${BUILT_PRODUCTS_DIR}/ReSwiftThunk/ReSwiftThunk.framework
 ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework

@@ -9,11 +9,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>DifferenceKit.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-DemoApp-DemoAppUITests.xcscheme</key>
 		<dict>
 			<key>isShown</key>

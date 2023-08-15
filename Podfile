@@ -15,7 +15,7 @@ target 'DemoApp' do
   pod 'CombineCocoa'
 
   # Diffing pods
-  pod 'DifferenceKit/UIKitExtension'
+#  pod 'DifferenceKit/UIKitExtension'
 
   #Image library
   pod 'SDWebImage'
@@ -30,4 +30,14 @@ target 'DemoApp' do
     # Pods for testing
   end
 
+end
+
+post_install do |installer|
+  installer.generated_projects.each do |project|
+        project.targets.each do |target|
+            target.build_configurations.each do |config|
+                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+             end
+        end
+ end
 end
