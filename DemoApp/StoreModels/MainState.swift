@@ -10,7 +10,6 @@ import ReSwift
 import ReSwiftThunk
 
 // MARK: DetailScreenState
-
 enum NewsDetailStatus: Equatable {
     case willHide(Article)
     case hide
@@ -29,8 +28,15 @@ enum NewsDetailStatus: Equatable {
 
 }
 
+enum LoadingState: Equatable {
+    case idle
+    case loading
+    case failed(String?)
+}
+
 // MARK: App State
 struct MainState: Equatable {
+    var loadingState: LoadingState = .idle
     var articlesPerPage = 10
     var isTotalPageFetched = false
     var articlePages: Pages<Article> = Pages<Article>()
