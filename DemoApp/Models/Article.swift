@@ -5,10 +5,9 @@
 //  Created by Ezimet Ozkhan on 2/7/23.
 //
 
-import DifferenceKit
 import Foundation
 
-struct Article: Codable, ContentEquatable, ContentIdentifiable, Hashable, Equatable {
+struct Article: Codable, Hashable, Equatable {
     let id: Int
     let title: String
     let url: String

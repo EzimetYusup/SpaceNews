@@ -22,7 +22,7 @@ final class ReSwiftModelsTests: XCTestCase {
         XCTAssertEqual(state.articlePages.isComplete, false)
     }
 
-    func testfetchedTotalArticleCount() {
+    func testFetchedTotalArticleCount() {
         let action = MainStateAction.fetchedTotalArticleCount(totalCount: 15)
         let state = mainReducer(action: action, state: nil)
         XCTAssertEqual(state.articles.count, 0)

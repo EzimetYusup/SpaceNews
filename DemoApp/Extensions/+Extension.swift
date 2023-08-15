@@ -41,3 +41,11 @@ public enum TestingHelper {
     static var articleTitleLabelIdentifier = "articleTitleLabel"
     static var articleSummaryLabelIdentifier = "articleSummaryLabel"
 }
+
+// swiftlint:disable identifier_name
+extension Array where Element: Hashable {
+    static func - (a: Self, b: Self) -> Self {
+        let set = Set(b)
+        return a.filter { !set.contains($0) }
+    }
+}
