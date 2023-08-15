@@ -32,6 +32,7 @@
 		9CD6906F2992B51B00698238 /* Thunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD6906E2992B51B00698238 /* Thunks.swift */; };
 		9CD690722992B58000698238 /* MainState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD690712992B58000698238 /* MainState.swift */; };
 		9CD690772992CDBB00698238 /* +Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD690762992CDBB00698238 /* +Extension.swift */; };
+		9CDB2C652A895A42007A668D /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDB2C642A895A42007A668D /* Loadable.swift */; };
 		DA8729FCDB7332C47341D580 /* Pods_DemoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77F86CE79DC6996B469AC34B /* Pods_DemoApp.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
@@ -85,6 +86,7 @@
 		9CD6906E2992B51B00698238 /* Thunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thunks.swift; sourceTree = "<group>"; };
 		9CD690712992B58000698238 /* MainState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainState.swift; sourceTree = "<group>"; };
 		9CD690762992CDBB00698238 /* +Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+Extension.swift"; sourceTree = "<group>"; };
+		9CDB2C642A895A42007A668D /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
 		CF67846684D8B26A1AE328E2 /* Pods-DemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoApp.debug.xcconfig"; path = "Target Support Files/Pods-DemoApp/Pods-DemoApp.debug.xcconfig"; sourceTree = "<group>"; };
 		DDCDD2EC41F0F4E53747570D /* Pods_DemoApp_DemoAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DemoApp_DemoAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE763865AAD0B6ED9CFC4381 /* Pods-DemoApp-DemoAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoApp-DemoAppUITests.release.xcconfig"; path = "Target Support Files/Pods-DemoApp-DemoAppUITests/Pods-DemoApp-DemoAppUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				9CA1F16429943C71002B05BD /* NewsDetailViewController.swift */,
 				9CD690382989C19F00698238 /* NewsListViewController.swift */,
 				9CA1F169299AF72A002B05BD /* NewsCell.swift */,
+				9CDB2C642A895A42007A668D /* Loadable.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -530,6 +533,7 @@
 				9CD690682991B56400698238 /* Api.swift in Sources */,
 				9CD690722992B58000698238 /* MainState.swift in Sources */,
 				9CD690372989C19F00698238 /* SceneDelegate.swift in Sources */,
+				9CDB2C652A895A42007A668D /* Loadable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
