@@ -43,9 +43,7 @@ final class ApiTests: XCTestCase {
 
     func testFetchArticleApi400Error() async throws {
         URLProtocol.registerClass(MockURLProtocol.self)
-        MockURLProtocol.url = newsFirstPageUrl
-        MockURLProtocol.statusCode = 400
-        MockURLProtocol.result = .success(Data())
+        MockURLProtocol.setMockResponse(for: newsFirstPageUrl, statusCode: 400, result: .success(Data()))
         let result = await api.fetchArticles(page: 1)
         if case .failure(let failure) = result {
             XCTAssertEqual(failure, .clientSideError)
@@ -56,10 +54,7 @@ final class ApiTests: XCTestCase {
 
     func testFetchArticleApi500Error() async throws {
         URLProtocol.registerClass(MockURLProtocol.self)
-        let api = NewsApi()
-        MockURLProtocol.url = newsFirstPageUrl
-        MockURLProtocol.statusCode = 500
-        MockURLProtocol.result = .success(Data())
+        MockURLProtocol.setMockResponse(for: newsFirstPageUrl, statusCode: 500, result: .success(Data()))
         let result = await api.fetchArticles(page: 1)
         if case .failure(let failure) = result {
             XCTAssertEqual(failure, .serverSideError)
@@ -69,11 +64,6 @@ final class ApiTests: XCTestCase {
     }
 
     func testFetchWithInvalidURL() async throws {
-        URLProtocol.registerClass(MockURLProtocol.self)
-
-        MockURLProtocol.url = newsFirstPageUrl
-        MockURLProtocol.statusCode = 500
-        MockURLProtocol.result = .success(Data())
         let result: Result<Article?, ApiError> = await api.fetch(url: "")
         if case .failure(let failure) = result {
             XCTAssertEqual(failure, .invalidRequest)
@@ -84,77 +74,13 @@ final class ApiTests: XCTestCase {
 
     func testFetchWithDecodingError() async throws {
         URLProtocol.registerClass(MockURLProtocol.self)
-        MockURLProtocol.url = totalCountUrl
-        MockURLProtocol.statusCode = 200
         let data = "string"
-        MockURLProtocol.result = .success(data.description.data(using: .utf8))
+        MockURLProtocol.setMockResponse(for: totalCountUrl, statusCode: 200, result: .success(data.description.data(using: .utf8)))
         let result: Result<Int?, ApiError> = await api.fetch(url: totalCountUrl)
         if case .failure(let failure) = result {
             XCTAssertEqual(failure, .parsingError)
         } else {
             XCTAssert(false, "Should have failure")
         }
-    }
-}
-
-protocol MockURLResponder {
-    static func respond(to request: URLRequest) throws -> Data
-}
-
-class MockURLProtocol: URLProtocol {
-    static var url: String = ""
-    static var statusCode: Int = 200
-    static var result: Result<Data?, Error>!
-
-    override class func canInit(with request: URLRequest) -> Bool {
-        if request.url?.absoluteString == url {
-            return true
-        }
-        return false
-    }
-
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        request
-    }
-
-    override func startLoading() {
-        guard let client = client else { return }
-
-        do {
-            // Here we try to get data from our responder type, and
-            // we then send that data, as well as a HTTP response,
-            // to our client. If any of those operations fail,00000
-            // we send an error instead:
-//            let data = try Responder.respond(to: request)
-
-            let response = try XCTUnwrap(HTTPURLResponse(
-                url: XCTUnwrap(request.url),
-                statusCode: Self.statusCode,
-                httpVersion: "HTTP/1.1",
-                headerFields: nil
-            ))
-
-            client.urlProtocol(self,
-                               didReceive: response,
-                               cacheStoragePolicy: .notAllowed
-            )
-            if case .success(let data) = Self.result, let data = data {
-                client.urlProtocol(self, didLoad: data)
-            }
-
-            if case .failure(let error) = Self.result {
-                client.urlProtocol(self, didFailWithError: error)
-            }
-            client.urlProtocolDidFinishLoading(self)
-
-        } catch {
-            client.urlProtocol(self, didFailWithError: error)
-        }
-
-        client.urlProtocolDidFinishLoading(self)
-    }
-
-    override func stopLoading() {
-        // Required method, implement as a no-op.
     }
 }
