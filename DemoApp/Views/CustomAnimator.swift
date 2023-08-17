@@ -46,41 +46,49 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         return 0.20
     }
 
+    /// interruptibleAnimator - animates shared image view between news list and news details screen
+    /// - Parameter transitionContext: UIViewControllerContextTransitioning
+    /// - Returns: UIViewImplicitlyAnimating
     func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+        // check if we have already created property animator
         if let propertyAnimator = propertyAnimator {
             return propertyAnimator
         }
 
+        // extract the container view when transitioning
         let container = transitionContext.containerView
 
+        // extract from view controller and to view controller that transitioning from/to
         guard
             let fromVC = transitionContext.viewController(forKey: .from),
             let toVC = transitionContext.viewController(forKey: .to) else {
                 fatalError()
         }
-
+        // destination view controller's view
         guard let toView = toVC.view  else {
             fatalError()
         }
 
+        // if presenting add  destination view controller's view to transitioning container
         if self.isPresenting {
             container.addSubview(toView)
         }
 
+        // extract news detail view controller depending on push/pop behavior
         guard let newsDetailVC = self.isPresenting ? (toVC as? NewsDetailViewController) : (fromVC as? NewsDetailViewController) else {
             fatalError("checking for transition animation failed")
         }
 
-        // prepare news detail screen views for animation
+        // prepare news detail screen sub views for animation
         newsDetailVC.articleImageView.alpha = 0
         newsDetailVC.articleTitleLabel.alpha = self.isPresenting ? 0 : 1
         newsDetailVC.articleSummary.alpha = self.isPresenting ? 0 : 1
 
-        // frame origin of the moving image
+        // original frame of the moving image
         let imageFrameInNewsDetails = newsDetailVC.articleImageView.superview!.convert(newsDetailVC.articleImageView.frame, to: nil)
-        let movingImageOrigin = self.isPresenting ? self.cellImageFrame : imageFrameInNewsDetails
+        let movingImageFrame = self.isPresenting ? self.cellImageFrame : imageFrameInNewsDetails
         // this is the image view that animate between news list VC and news detail VC
-        let movingImage = UIImageView(frame: movingImageOrigin)
+        let movingImage = UIImageView(frame: movingImageFrame)
         movingImage.contentMode = .scaleAspectFill
         movingImage.layer.cornerRadius = 15
         movingImage.clipsToBounds = true
@@ -100,25 +108,32 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let actualLabelSize = titleLabel.text!.boundingRect(with: maxLabelSize, options: [.usesLineFragmentOrigin], attributes: [.font: titleLabel.font!], context: nil)
         let labelHeight = actualLabelSize.height
 
+        // destination image frame in news details screen
         var destinationImageFrameInNewsDetail = newsDetailVC.articleImageView.superview!.convert(newsDetailVC.articleImageView.frame, to: nil)
         destinationImageFrameInNewsDetail.origin.y += labelHeight + 10 // stack view spacing
         destinationImageFrameInNewsDetail.origin.x += toView.layoutMargins.left // safe area
-
+        // image frame width - extract the safe area margins from both side
         let width = toView.bounds.width - toView.layoutMargins.left  - toView.layoutMargins.right
+        // image size calculation based on width and height ratio
         destinationImageFrameInNewsDetail.size = CGSize(width: width, height: toView.frame.width*0.65)
 
+        // destination image frame based on push/pop
         let destinationImageFrame = self.isPresenting ? destinationImageFrameInNewsDetail : cellImageFrame
 
+        // timing curve of animation
         let timing = TimingCurve(curve: .easeIn, dampingRatio: 0.8)
+        // initialize UIViewPropertyAnimator
         let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: timing)
 
+        // add property animation
         animator.addAnimations {
             movingImage.frame = destinationImageFrame
             movingImage.layer.cornerRadius = self.isPresenting ? 0 : 15
             newsDetailVC.articleTitleLabel.alpha = self.isPresenting ? 1 : 0
             newsDetailVC.articleSummary.alpha = self.isPresenting ? 1 : 0
         }
-
+        // animation completion block
+        // need to hide moving image and since by the time original image in both screen will appear
         animator.addCompletion { _ in
             newsDetailVC.articleImageView.alpha = self.isPresenting ? 1 : 0
             self.cell.thumbNail.alpha = self.isPresenting ? 0:1
@@ -133,15 +148,19 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         return animator
     }
 
+    /// starts transitioning animation
+    /// - Parameter transitionContext: UIViewControllerContextTransitioning
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let animator = interruptibleAnimator(using: transitionContext)
         animator.startAnimation()
-
+        // animate popping
         if !isPresenting {
             animatePop(using: transitionContext)
         }
     }
 
+    ///  Popping animation
+    /// - Parameter transitionContext: UIViewControllerContextTransitioning
     func animatePop(using transitionContext: UIViewControllerContextTransitioning) {
         let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
         let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
@@ -162,7 +181,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
 }
 
-@available(iOS 11.0, *)
+/// Timing curve with damping
 public class TimingCurve: NSObject, UITimingCurveProvider {
 
     public let timingCurveType: UITimingCurveType
