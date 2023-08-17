@@ -9,7 +9,6 @@ import Combine
 import CombineCocoa
 import ReSwift
 import SDWebImage
-import TinyConstraints
 import UIKit
 
 /// News List View Controller - screen that shows list of news in UITableView
@@ -163,16 +162,16 @@ extension NewsListViewController: StoreSubscriber {
             switch state {
             case .loading:
                 // hide failed view if necessary, show loader only
-                hideFailedView()
+                hideErrorStateView()
                 showLoader()
             case .idle:
                 // hide loader and failed view
                 hideLoader()
-                hideFailedView()
+                hideErrorStateView()
             case .failed(let errorMessage):
                 // hide loader, and show error state view
                 hideLoader()
-                showFailedView(errorMessage ?? "Oh Snap, we hit a snag, try again later")
+                showErrorStateView(errorMessage ?? "Oh Snap, we hit a snag, try again later")
             }
         }
     }

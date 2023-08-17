@@ -45,7 +45,7 @@ protocol Loadable: LoadingStateContainable {
     func hideLoader()
 }
 
-/// Default implementation of show loader and hide loader funcitons
+/// Default implementation of show loader and hide loader functions
 extension Loadable where Self: UIViewController {
     func showLoader() {
         stateContainerView.isHidden = false
@@ -66,20 +66,31 @@ extension Loadable where Self: UIViewController {
     }
 }
 
+/// Retriable protocol - for retrying after failure
 @objc protocol Retriable: AnyObject {
+    /// retry function
     func didPressRetry()
 }
 
+/// Failable protocol - for showing error state
 protocol Failable: LoadingStateContainable {
-//    var failedStateView: UIView { get set }
-//    var retryButton: UIButton { get set }
-    func showFailedView(_ errorMessage: String)
-    func hideFailedView()
-    func didPressRetry()
+
+    /// Shows error screen with error message
+    /// - Parameter errorMessage: String
+    func showErrorStateView(_ errorMessage: String)
+
+    /// Hides error state view
+    func hideErrorStateView()
 }
 
+/// default implementation of Failable protocol for UIViewController and Retriable
 extension Failable where Self: UIViewController & Retriable {
-    func showFailedView(_ errorMessage: String) {
+
+    /// Default implementation of show error state view
+    /// will display warning icon, error message and retry button in vertical stack view
+    /// retry button is linked to Retriable's didPressRetry()
+    /// - Parameter errorMessage: String
+    func showErrorStateView(_ errorMessage: String) {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -114,7 +125,7 @@ extension Failable where Self: UIViewController & Retriable {
         view.bringSubviewToFront(stateContainerView)
     }
 
-    func hideFailedView() {
+    func hideErrorStateView() {
         stateContainerView.subviews.forEach {$0.removeFromSuperview()}
     }
 }

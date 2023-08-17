@@ -28,19 +28,12 @@ let fetchArticle = Thunk<MainState> { dispatch, getState in
         }
         // current page default value is 0 so need to add 1
         let page = state.articlePages.currentPage + 1
-        // make async call
+        // make async api call
         let result = await api.fetchArticles(page: page)
         switch result {
         case .success(let articles):
             if let articles = articles {
                 await MainActor.run {
-                    if isRunningTest || isUITest {
-                        let testArticle = Article(id: 1, title: "NASA Awards Environmental Compliance, Operations Contract", url: "http://www.nasa.gov/press-release/nasa-awards-environmental-compliance-operations-contract", imageUrl: "https://www.nasa.gov/sites/default/files/thumbnails/image/nasa_meatball_1.jpeg?itok=hHt8a7fl", newsSite: "", summary: "NASA has selected Navarro Research and Engineering, Inc., of Oak Ridge, Tennessee, for the Environmental Compliance and Operations 3 (ECO3) contract, which provides environmental restoration program services and other support at the agency’s White Sands Test Facility in Las Cruces, New Mexico.", publishedAt: "")
-                        dispatch(
-                            MainStateAction.fetchedNews(articles: [testArticle])
-                        )
-                        return
-                    }
                     // dispatch fetchedNews action to notify reducer with newly fetched articles
                     dispatch(
                         MainStateAction.fetchedNews(articles: articles)
@@ -63,13 +56,6 @@ let fetchTotalArticleCount = Thunk<MainState> { dispatch, _ in
         print("fetching total # page")
         let result = await NewsApi().fetchTotalArticleCount()
         if case .success(let count) = result, let count = count {
-            if isRunningTest || isUITest {
-                dispatch(
-                    MainStateAction.fetchedTotalArticleCount(totalCount: 5)
-                )
-                return
-            }
-
             dispatch(
                 MainStateAction.fetchedTotalArticleCount(totalCount: count)
             )

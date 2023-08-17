@@ -47,7 +47,10 @@ struct NewsApi {
             let obj = try JSONDecoder().decode(T.self, from: data)
             return .success(obj)
             // catches parsing errors
-        } catch _ as DecodingError {
+        } catch let error as DecodingError {
+            #if DEBUG
+                print(error)
+            #endif
             return .failure(.parsingError)
         } catch {
             // all other errors

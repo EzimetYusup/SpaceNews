@@ -12,7 +12,6 @@ final class DemoAppUITests: XCTestCase {
     let app = XCUIApplication()
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
         app.launchArguments = ["isUITest"]
@@ -29,7 +28,6 @@ final class DemoAppUITests: XCTestCase {
         let tableView = app.tables["tableView"]
         _ = tableView.waitForExistence(timeout: 3)
         XCTAssert(tableView.cells.count == 1)
-
         let cell = tableView.cells.element(matching: .cell, identifier: "news_cell_0")
         XCTAssert(cell.exists)
         XCTAssertEqual(cell.staticTexts["news_cell_title"].label, "NASA Awards Environmental Compliance, Operations Contract")

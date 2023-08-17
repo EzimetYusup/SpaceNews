@@ -102,15 +102,16 @@ class NewsDetailViewController: UIViewController {
             scrollViewContent.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             scrollViewContent.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             scrollViewContent.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            scrollViewContent.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            scrollViewContent.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+
+            // set height of image view
+            articleImageView.heightAnchor.constraint(equalToConstant: view.frame.width*0.65)
 
         ])
 
         scrollViewContent.addArrangedSubview(articleTitleLabel)
         scrollViewContent.addArrangedSubview(articleImageView)
         scrollViewContent.addArrangedSubview(articleSummary)
-
-        articleImageView.height(view.frame.width*0.65)
     }
 }
 

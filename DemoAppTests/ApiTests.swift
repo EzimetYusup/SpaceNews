@@ -9,13 +9,14 @@ import XCTest
 @testable import DemoApp
 
 final class ApiTests: XCTestCase {
-    let newsFirstPageUrl: String = "https://api.spaceflightnewsapi.net/v3/articles?_start=0"
-    let totalCountUrl: String = "https://api.spaceflightnewsapi.net/v3/articles/count"
+    static let newsFirstPageUrl: String = "https://api.spaceflightnewsapi.net/v3/articles?_start=0"
+    static let totalCountUrl: String = "https://api.spaceflightnewsapi.net/v3/articles/count"
     var api: NewsApi!
 
     override func setUp() {
         super.setUp()
         api = NewsApi()
+        URLProtocol.registerClass(MockURLProtocol.self)
     }
 
     func testApiErrorUserFriendlyErrorMessages() throws {
@@ -42,8 +43,7 @@ final class ApiTests: XCTestCase {
     }
 
     func testFetchArticleApi400Error() async throws {
-        URLProtocol.registerClass(MockURLProtocol.self)
-        MockURLProtocol.setMockResponse(for: newsFirstPageUrl, statusCode: 400, result: .success(Data()))
+        MockURLProtocol.setMockResponse(for: Self.newsFirstPageUrl, statusCode: 400, result: .success(Data()))
         let result = await api.fetchArticles(page: 1)
         if case .failure(let failure) = result {
             XCTAssertEqual(failure, .clientSideError)
@@ -53,8 +53,7 @@ final class ApiTests: XCTestCase {
     }
 
     func testFetchArticleApi500Error() async throws {
-        URLProtocol.registerClass(MockURLProtocol.self)
-        MockURLProtocol.setMockResponse(for: newsFirstPageUrl, statusCode: 500, result: .success(Data()))
+        MockURLProtocol.setMockResponse(for: Self.newsFirstPageUrl, statusCode: 500, result: .success(Data()))
         let result = await api.fetchArticles(page: 1)
         if case .failure(let failure) = result {
             XCTAssertEqual(failure, .serverSideError)
@@ -73,10 +72,9 @@ final class ApiTests: XCTestCase {
     }
 
     func testFetchWithDecodingError() async throws {
-        URLProtocol.registerClass(MockURLProtocol.self)
         let data = "string"
-        MockURLProtocol.setMockResponse(for: totalCountUrl, statusCode: 200, result: .success(data.description.data(using: .utf8)))
-        let result: Result<Int?, ApiError> = await api.fetch(url: totalCountUrl)
+        MockURLProtocol.setMockResponse(for: Self.newsFirstPageUrl, statusCode: 200, result: .success(data.description.data(using: .utf8)))
+        let result: Result<Int?, ApiError> = await api.fetch(url: Self.newsFirstPageUrl)
         if case .failure(let failure) = result {
             XCTAssertEqual(failure, .parsingError)
         } else {

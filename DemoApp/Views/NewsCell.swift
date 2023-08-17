@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import TinyConstraints
 import UIKit
 
 /// UITableViewCell of each news
@@ -18,43 +17,63 @@ class NewsCell: UITableViewCell {
     // container for title and thumbnail 
     let containerView = UIView()
 
+    // MARK: Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setUp()
+        setupSubViews()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setUp() {
+    /// set up subviews
+    func setupSubViews() {
         contentView.addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(thumbNail)
 
+        let thumbnailHeight: CGFloat = 100
         let offset: CGFloat = 12
-        containerView.topToSuperview(offset: offset/2)
-        containerView.leftToSuperview(offset: offset)
-        containerView.rightToSuperview(offset: -offset)
-        containerView.bottomToSuperview(offset: -offset/2)
+        // enable auto layout
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        thumbNail.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        let thumbnailHeightConstraint = thumbNail.heightAnchor.constraint(equalToConstant: thumbnailHeight)
+        thumbnailHeightConstraint.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            // set container view auto layout constraints
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: offset/2),
+            containerView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: offset),
+            containerView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -offset),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -offset/2),
+
+            // set up thumbnail constraints
+            thumbNail.widthAnchor.constraint(equalToConstant: thumbnailHeight*1.45),
+            thumbnailHeightConstraint,
+            thumbNail.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: offset),
+            thumbNail.topAnchor.constraint(equalTo: containerView.topAnchor, constant: offset),
+            thumbNail.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -offset),
+
+            // set up title label constrains
+            titleLabel.leftAnchor.constraint(equalTo: thumbNail.rightAnchor, constant: offset),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: offset),
+            titleLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -offset),
+            titleLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -offset)
+        ])
+        // style container view
         containerView.backgroundColor = .containerBackground
         containerView.layer.cornerRadius = 20
         containerView.clipsToBounds = true
 
-        let height: CGFloat = 100
-        thumbNail.leftToSuperview(offset: offset)
-        thumbNail.width(height*1.45)
-        thumbNail.height(height, priority: .defaultHigh)
-        thumbNail.topToSuperview(offset: offset)
-        thumbNail.bottomToSuperview(offset: -offset)
+        // style thumbnail image view
         thumbNail.contentMode = .scaleAspectFill
         thumbNail.layer.cornerRadius = 15
         thumbNail.clipsToBounds = true
 
-        titleLabel.topToSuperview(offset: offset)
-        titleLabel.leftToRight(of: thumbNail, offset: offset)
-        titleLabel.rightToSuperview(offset: -offset)
-        titleLabel.bottomToSuperview(offset: -offset)
+        // style title 
         titleLabel.numberOfLines = 0
         titleLabel.accessibilityIdentifier = "news_cell_title"
     }
