@@ -27,7 +27,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let newsList = NewsListViewController()
         let navigationController = UINavigationController(rootViewController: newsList)
         window?.rootViewController = navigationController
-        mainStore.dispatch(fetchArticle)
         window?.makeKeyAndVisible()
     }
 

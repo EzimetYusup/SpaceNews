@@ -31,7 +31,6 @@ extension UIColor {
     }
 }
 
-
 // swiftlint:disable identifier_name
 extension Array where Element: Hashable {
     static func - (a: Self, b: Self) -> Self {

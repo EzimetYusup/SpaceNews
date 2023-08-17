@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Article Model - Represents single news article from space news api v3
 struct Article: Codable, Hashable, Equatable {
     let id: Int
     let title: String
@@ -15,8 +16,4 @@ struct Article: Codable, Hashable, Equatable {
     let newsSite: String
     let summary: String
     let publishedAt: String
-
-    func isContentEqual(to source: Article) -> Bool {
-        return self.id == source.id
-    }
 }

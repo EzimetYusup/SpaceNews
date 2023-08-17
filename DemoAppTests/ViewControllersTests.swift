@@ -31,9 +31,9 @@ final class ViewControllersTests: XCTestCase {
         XCTAssertEqual(newsDetailVC.articleTitleLabel.numberOfLines, 0)
         XCTAssertEqual(newsDetailVC.articleTitleLabel.textAlignment, .center)
 
-        XCTAssertEqual(newsDetailVC.articletSummary.font, .preferredFont(forTextStyle: .body, compatibleWith: .none))
-        XCTAssertEqual(newsDetailVC.articletSummary.numberOfLines, 0)
-        XCTAssertEqual(newsDetailVC.articletSummary.textAlignment, .natural)
+        XCTAssertEqual(newsDetailVC.articleSummary.font, .preferredFont(forTextStyle: .body, compatibleWith: .none))
+        XCTAssertEqual(newsDetailVC.articleSummary.numberOfLines, 0)
+        XCTAssertEqual(newsDetailVC.articleSummary.textAlignment, .natural)
     }
 
 }

@@ -43,8 +43,8 @@ final class DemoAppUITests: XCTestCase {
 
         let cell = tableView.cells.element(matching: .cell, identifier: "news_cell_0")
         cell.tap()
-        XCTAssert(app.staticTexts[TestingHelper.articleTitleLabelIdentifier].exists)
-        XCTAssertEqual(app.staticTexts[TestingHelper.articleTitleLabelIdentifier].label, "NASA Awards Environmental Compliance, Operations Contract")
-        XCTAssertEqual(app.staticTexts[TestingHelper.articleSummaryLabelIdentifier].label, "NASA has selected Navarro Research and Engineering, Inc., of Oak Ridge, Tennessee, for the Environmental Compliance and Operations 3 (ECO3) contract, which provides environmental restoration program services and other support at the agency’s White Sands Test Facility in Las Cruces, New Mexico.")
+        XCTAssert(app.staticTexts[AccessibilityID.articleTitleLabel].exists)
+        XCTAssertEqual(app.staticTexts[AccessibilityID.articleTitleLabel].label, "NASA Awards Environmental Compliance, Operations Contract")
+        XCTAssertEqual(app.staticTexts[AccessibilityID.articleSummaryLabel].label, "NASA has selected Navarro Research and Engineering, Inc., of Oak Ridge, Tennessee, for the Environmental Compliance and Operations 3 (ECO3) contract, which provides environmental restoration program services and other support at the agency’s White Sands Test Facility in Las Cruces, New Mexico.")
     }
 }
