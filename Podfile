@@ -9,7 +9,6 @@ target 'DemoApp' do
   # Redux pods
   pod 'ReSwift'
   pod 'ReSwiftThunk'
-  pod "TinyConstraints"
   
   # Reactive pods
   pod 'CombineCocoa'
