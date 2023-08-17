@@ -177,14 +177,14 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/CombineCocoa/CombineCocoa.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ReSwift-framework/ReSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReSwiftThunk/ReSwiftThunk.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/CombineCocoa/CombineCocoa.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ReSwift-framework/ReSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReSwiftThunk/ReSwiftThunk.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework"

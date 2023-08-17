@@ -9,10 +9,13 @@ import Foundation
 import TinyConstraints
 import UIKit
 
+/// UITableViewCell of each news
 class NewsCell: UITableViewCell {
-
+    // title label of news article
     let titleLabel = UILabel()
+    // Thumbnail image of news article
     let thumbNail = UIImageView()
+    // container for title and thumbnail 
     let containerView = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -38,7 +41,6 @@ class NewsCell: UITableViewCell {
         containerView.layer.cornerRadius = 20
         containerView.clipsToBounds = true
 
-//        offset = 12
         let height: CGFloat = 100
         thumbNail.leftToSuperview(offset: offset)
         thumbNail.width(height*1.45)

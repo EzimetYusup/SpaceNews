@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "63BACA9ACB5165807A9377C70DDEAED5"
-               BuildableName = "libReSwiftThunk-Core-ExpectThunk.a"
-               BlueprintName = "ReSwiftThunk-Core-ExpectThunk"
+               BlueprintIdentifier = "A101A4DBCD7EBBC287BFF42694B00FF8"
+               BuildableName = "ReSwift.framework"
+               BlueprintName = "ReSwift-framework"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

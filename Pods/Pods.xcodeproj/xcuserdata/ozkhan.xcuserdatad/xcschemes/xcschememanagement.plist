@@ -9,11 +9,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-DemoApp-DemoAppUITests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-DemoApp.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -24,7 +19,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>ReSwift.xcscheme</key>
+		<key>Pods-DemoAppUITests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ReSwift-framework.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ReSwift-library.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

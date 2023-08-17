@@ -8,15 +8,24 @@
 import Foundation
 import UIKit
 
+/// Custom Animator while pushing/popping between NewsList screen and NewsDetails screen
+/// this animation will mainly focus on animating the Thumbnail image in NewsCell(NewsList screen) to main news image in NewsDetails screen and vice versa, it will give users an experience that visually same image is moving from news list cell to news details screen
 class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-
+    /// indicates whether we are pushing or popping to navigation stack
     var isPresenting: Bool
+    /// ImageView frame from news list cell
     var cellImageFrame: CGRect
+    /// news cell that user tapped
     var cell: NewsCell
+    /// shared Image  between two screens
     var image: UIImage
-
+    /// property animator that animates images' frame and corner radius
     fileprivate var propertyAnimator: UIViewPropertyAnimator?
 
+    /// Customer Animator Initializer
+    /// - Parameters:
+    ///   - isPresenting: indicate if we are moving from news list to news details or vice versa
+    ///   - newsCell: news cell that tapped by user
     init(isPresenting: Bool, newsCell: NewsCell) {
         self.isPresenting = isPresenting
         self.cell = newsCell
@@ -29,6 +38,9 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         }
     }
 
+    /// transition duration
+    /// - Parameter transitionContext: context
+    /// - Returns: TimeInterval for transition
     func transitionDuration(
         using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.20
@@ -133,7 +145,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func animatePop(using transitionContext: UIViewControllerContextTransitioning) {
         let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
         let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
-
+        toVC.view.alpha = 0.4
         let fromVCFrame = transitionContext.initialFrame(for: fromVC)
         let popOffsetFrame = fromVCFrame.offsetBy(dx: fromVCFrame.width, dy: 55)
 
@@ -143,6 +155,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             withDuration: transitionDuration(using: transitionContext),
             animations: {
                 fromVC.view.frame = popOffsetFrame
+                toVC.view.alpha = 1
         }, completion: {_ in
                 transitionContext.completeTransition(true)
         })

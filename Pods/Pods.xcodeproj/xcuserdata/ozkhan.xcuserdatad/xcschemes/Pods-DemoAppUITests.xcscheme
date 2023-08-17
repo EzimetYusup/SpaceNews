@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "63BACA9ACB5165807A9377C70DDEAED5"
-               BuildableName = "libReSwiftThunk-Core-ExpectThunk.a"
-               BlueprintName = "ReSwiftThunk-Core-ExpectThunk"
+               BlueprintIdentifier = "3AFDA6E651E1C03AD1394A40E3C2B5F4"
+               BuildableName = "libPods-DemoAppUITests.a"
+               BlueprintName = "Pods-DemoAppUITests"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

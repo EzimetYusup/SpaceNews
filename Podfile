@@ -20,17 +20,18 @@ target 'DemoApp' do
   #Image library
   pod 'SDWebImage'
   pod 'SwiftLint'
-  target 'DemoAppTests' do
-    inherit! :search_paths
-    # Pods for testing
-   pod 'ReSwiftThunk/ExpectThunk'
-  end
-
-  target 'DemoAppUITests' do
-    # Pods for testing
-  end
-
 end
+
+target 'DemoAppTests' do
+  inherit! :search_paths
+  # Pods for testing
+  pod 'ReSwiftThunk/ExpectThunk'
+end
+
+target 'DemoAppUITests' do
+  # Pods for testing
+end
+
 
 post_install do |installer|
   installer.generated_projects.each do |project|
