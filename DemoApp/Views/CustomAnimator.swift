@@ -29,7 +29,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     init(isPresenting: Bool, newsCell: NewsCell) {
         self.isPresenting = isPresenting
         self.cell = newsCell
-        let imageFrame = cell.thumbNail.superview!.convert(cell.thumbNail.frame, to: nil)
+        let imageFrame = cell.containerView.convert(cell.thumbNail.frame, to: nil)
         self.cellImageFrame = imageFrame
         if let image = newsCell.thumbNail.image {
             self.image = image
@@ -85,7 +85,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         newsDetailVC.articleSummary.alpha = self.isPresenting ? 0 : 1
 
         // original frame of the moving image
-        let imageFrameInNewsDetails = newsDetailVC.articleImageView.superview!.convert(newsDetailVC.articleImageView.frame, to: nil)
+        let imageFrameInNewsDetails = newsDetailVC.scrollViewContent.convert(newsDetailVC.articleImageView.frame, to: nil)
         let movingImageFrame = self.isPresenting ? self.cellImageFrame : imageFrameInNewsDetails
         // this is the image view that animate between news list VC and news detail VC
         let movingImage = UIImageView(frame: movingImageFrame)
@@ -105,8 +105,8 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
         let labelWidth = toView.bounds.width - toView.layoutMargins.left  - toView.layoutMargins.right
         let maxLabelSize = CGSize(width: labelWidth, height: CGFloat.greatestFiniteMagnitude)
-        let actualLabelSize = titleLabel.text!.boundingRect(with: maxLabelSize, options: [.usesLineFragmentOrigin], attributes: [.font: titleLabel.font!], context: nil)
-        let labelHeight = actualLabelSize.height
+        let actualLabelSize = titleLabel.text?.boundingRect(with: maxLabelSize, options: [.usesLineFragmentOrigin], attributes: [.font: titleLabel.font!], context: nil)
+        let labelHeight = actualLabelSize?.height ?? 0
 
         // destination image frame in news details screen
         var destinationImageFrameInNewsDetail = newsDetailVC.articleImageView.superview!.convert(newsDetailVC.articleImageView.frame, to: nil)

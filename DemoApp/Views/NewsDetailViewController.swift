@@ -31,9 +31,10 @@ class NewsDetailViewController: UIViewController {
     let articleTitleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = .preferredFont(forTextStyle: .largeTitle, compatibleWith: .none)
         label.numberOfLines = 0
         label.accessibilityIdentifier = AccessibilityID.articleTitleLabel
+        label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -42,15 +43,18 @@ class NewsDetailViewController: UIViewController {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.accessibilityTraits = .image
         return imageView
     }()
 
     // news article description or summary
     let articleSummary: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body, compatibleWith: .none)
         label.numberOfLines = 0
         label.accessibilityIdentifier = AccessibilityID.articleSummaryLabel
+        label.accessibilityTraits = .staticText
+        label.font = UIFont.preferredFont(forTextStyle: .body)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -88,6 +92,7 @@ class NewsDetailViewController: UIViewController {
         scrollView.addSubview(scrollViewContent)
         scrollViewContent.translatesAutoresizingMaskIntoConstraints = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
 
         let margins = view.layoutMarginsGuide
         NSLayoutConstraint.activate([
@@ -125,9 +130,12 @@ extension NewsDetailViewController: StoreSubscriber {
         if case .show(let article) = state.newsDetailStatus {
             self.article = article
             articleTitleLabel.text = article.title
+            articleTitleLabel.accessibilityTraits = .staticText
+            articleTitleLabel.accessibilityValue = article.title
             let placeHolder = UIImage(systemName: "photo")
             articleImageView.sd_setImage(with: URL(string: article.imageUrl), placeholderImage: placeHolder)
             articleSummary.text = article.summary
+            articleSummary.accessibilityValue = article.summary
         }
     }
 }

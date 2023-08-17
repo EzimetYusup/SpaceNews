@@ -72,9 +72,14 @@ class NewsCell: UITableViewCell {
         thumbNail.contentMode = .scaleAspectFill
         thumbNail.layer.cornerRadius = 15
         thumbNail.clipsToBounds = true
+        thumbNail.accessibilityTraits = .image
 
         // style title 
         titleLabel.numberOfLines = 0
         titleLabel.accessibilityIdentifier = "news_cell_title"
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.accessibilityTraits = .staticText
+
     }
 }

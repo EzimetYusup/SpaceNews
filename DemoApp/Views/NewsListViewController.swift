@@ -113,6 +113,7 @@ class NewsListViewController: UIViewController, Loadable, Failable {
       let datasource = UITableViewDiffableDataSource<Int, Article>(tableView: tableView, cellProvider: { (tableView, indexPath, article) -> UITableViewCell? in
           guard let cell = tableView.dequeueReusableCell(withIdentifier: self.newsCellIdentifier, for: indexPath) as? NewsCell else { fatalError("check news cell type")}
           cell.titleLabel.text = article.title
+          cell.titleLabel.accessibilityValue = article.title
           if let url = URL(string: article.imageUrl) {
               let placeHolder = UIImage(systemName: "photo")
               let scale = UIScreen.main.scale // Will be 2.0 on 6/7/8 and 3.0 on 6+/7+/8+ or later
